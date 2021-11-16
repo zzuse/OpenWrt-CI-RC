@@ -2,7 +2,7 @@
 
 自用 x86 软路由 OpenWrt 测试固件
 
-![](https://img.shields.io/github/workflow/status/deplives/OpenWrt-CI-RC/OpenWrt%20Builder?event=workflow_dispatch&label=%E6%89%8B%E5%8A%A8%E7%BC%96%E8%AF%91&style=flat-square)
+![](https://img.shields.io/github/workflow/status/deplives/OpenWrt-CI-RC/OpenWrt%20Builder%20RC?event=workflow_dispatch&label=%E6%89%8B%E5%8A%A8%E7%BC%96%E8%AF%91&style=flat-square)
 
 ## 固件特点
 
