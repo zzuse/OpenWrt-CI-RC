@@ -49,13 +49,25 @@ sed -i 's/<td id="wan6_i" style="width:16px; text-align:center; padding:3px">/<t
 # Add Firmware Commit Hash in Homepage
 echo 'Add Firmware Commit Hash in Homepage...'
 line_kernel_version=$(grep -n 'Kernel Version' package/lean/autocore/files/x86/index.htm | awk -F ':' '{print $1}')
-sed -i "${line_kernel_version}a\                <tr><td width=\"33%\">编译版本</td><td>$1</td></tr>" package/lean/autocore/files/x86/index.htm
+sed -i "${line_kernel_version}a\                <tr><td width=\"33%\">编译版本</td><td>$1 (Stable)</td></tr>" package/lean/autocore/files/x86/index.htm
 
 # Add Build Date in Homepage
 echo 'Add Build Date in Homepage...'
 build_date=$(date +"%Y-%m-%d")
 line_build_version=$(grep -n '编译版本' package/lean/autocore/files/x86/index.htm | awk -F ':' '{print $1}')
 sed -i "${line_build_version}a\                <tr><td width=\"33%\">编译日期</td><td>${build_date}</td></tr>" package/lean/autocore/files/x86/index.htm
+
+# Replace openwrt.org in diagnostics with www.baidu.com
+echo 'Replace openwrt.org in diagnostics.htm with www.baidu.com...'
+sed -i "/exit 0/d" package/lean/default-settings/files/zzz-default-settings
+cat <<EOF >>package/lean/default-settings/files/zzz-default-settings
+uci set luci.diag.ping=www.baidu.com
+uci set luci.diag.route=www.baidu.com
+uci set luci.diag.dns=www.baidu.com
+uci commit luci
+
+exit 0
+EOF
 
 # Modify default banner
 echo 'Modify default banner...'
