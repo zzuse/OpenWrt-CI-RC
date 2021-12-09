@@ -23,6 +23,7 @@ sed -i '/ihost.netflix.com/d' feeds/luci/modules/luci-mod-admin-full/luasrc/mode
 
 echo 'Add i18n in base.po...'
 cat <<EOF >>feeds/luci/modules/luci-base/po/zh-cn/base.po
+
 msgid "Build Version"
 msgstr "编译版本"
 
