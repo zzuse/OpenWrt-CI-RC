@@ -12,4 +12,4 @@ echo 'Add helloworld feed...'
 sed -i '$a src-git helloworld https://github.com/deplives/helloworld;dev' feeds.conf.default
 
 echo 'Add openwrt-package feed...'
-sed -i '$a src-git deplives https://github.com/deplives/openwrt-package;dev' feeds.conf.default
+sed -i '$a src-git bobby https://github.com/deplives/openwrt-package;dev' feeds.conf.default
