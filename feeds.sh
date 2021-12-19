@@ -9,7 +9,7 @@
 # sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
 
 echo 'Add helloworld feed...'
-sed -i '$a src-git helloworld https://github.com/deplives/helloworld' feeds.conf.default
+sed -i '$a src-git helloworld https://github.com/deplives/helloworld;dev' feeds.conf.default
 
 echo 'Add openwrt-package feed...'
-sed -i '$a src-git deplives https://github.com/deplives/openwrt-package' feeds.conf.default
+sed -i '$a src-git deplives https://github.com/deplives/openwrt-package;dev' feeds.conf.default
