@@ -23,7 +23,7 @@ on:
       kernel:
         description: 'kernel'
         required: true
-        default: '5.4'
+        default: '5.10'
         
 
 env:
