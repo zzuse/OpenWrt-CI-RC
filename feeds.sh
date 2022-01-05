@@ -8,13 +8,20 @@
 # Add a feed source
 # sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
 
-MODE=$1 # stable test
+MODE=$1 # stable dev beta
 
 BRANCH_BOBBY='dev'
 BRANCH_LEDE='dev'
+
 if [ "$MODE" == "stable" ]; then
     BRANCH_BOBBY='main'
     BRANCH_LEDE='master'
+elif [ "$MODE" == "dev" ]; then
+    BRANCH_BOBBY='dev'
+    BRANCH_LEDE='dev'
+elif [ "$MODE" == "beta" ]; then
+    BRANCH_BOBBY='dev'
+    BRANCH_LEDE='beta'
 fi
 
 echo 'Replace https://github.com/coolsnowwolf/packages'

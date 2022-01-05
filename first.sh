@@ -3,9 +3,13 @@
 
 # Run before feeds install
 
-COMMIT_ID=$1
+MODE=$1
+COMMIT_ID=$2
+if [ -z "$MODE" ]; then
+    COMMIT_ID='Unknow'
+fi
 if [ -z "$COMMIT_ID" ]; then
-    COMMIT_ID='?'
+    COMMIT_ID='Unknow'
 fi
 
 # Modify default timezone
@@ -54,11 +58,11 @@ sed -i 's/<td id="wan6_i" style="width:16px; text-align:center; padding:3px">/<t
 # Add Firmware Commit Hash in Homepage
 echo 'Add Firmware Commit Hash in Homepage...'
 line_kernel_version=$(grep -n 'Kernel Version' package/lean/autocore/files/x86/index.htm | awk -F ':' '{print $1}')
-sed -i "${line_kernel_version}a\                <tr><td width=\"33%\"><%:Build Version%></td><td>$COMMIT_ID</td></tr>" package/lean/autocore/files/x86/index.htm
+sed -i "${line_kernel_version}a\                <tr><td width=\"33%\"><%:Build Version%></td><td>$COMMIT_ID ($MODE)</td></tr>" package/lean/autocore/files/x86/index.htm
 
 # Add Build Date in Homepage
 echo 'Add Build Date in Homepage...'
-build_date=$(date +"%Y-%m-%d")
+build_date=$(date +"%Y-%m-%d %H:%M:%S")
 line_build_version=$(grep -n 'Build Version' package/lean/autocore/files/x86/index.htm | awk -F ':' '{print $1}')
 sed -i "${line_build_version}a\                <tr><td width=\"33%\"><%:Build Date%></td><td>${build_date}</td></tr>" package/lean/autocore/files/x86/index.htm
 
