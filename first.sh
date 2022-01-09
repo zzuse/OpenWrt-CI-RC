@@ -88,7 +88,7 @@ echo "██║   ██║██╔═══╝ ██╔══╝  ██║�
 echo "╚██████╔╝██║     ███████╗██║ ╚████║╚███╔███╔╝██║  ██║   ██║    " >>package/base-files/files/etc/banner
 echo " ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚══╝╚══╝ ╚═╝  ╚═╝   ╚═╝    " >>package/base-files/files/etc/banner
 echo " ------------------------------------------------------------- " >>package/base-files/files/etc/banner
-echo " %D %C ${build_date} @Bobby                                    " >>package/base-files/files/etc/banner
+echo " %D %C ${build_date} $MODE @Bobby                              " >>package/base-files/files/etc/banner
 echo " $COMMIT_ID                                                    " >>package/base-files/files/etc/banner
 echo " ------------------------------------------------------------- " >>package/base-files/files/etc/banner
 echo "                                                               " >>package/base-files/files/etc/banner
