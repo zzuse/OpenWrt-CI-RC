@@ -31,3 +31,10 @@ msgid "Build Date"
 msgstr "编译日期"
 
 EOF
+
+echo 'Add DMC firmware i915/glk_dmc_ver1_04.bin...'
+sudo mkdir -p /lib/firmware/i915
+sudo curl -L https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/i915/glk_dmc_ver1_04.bin -o /lib/firmware/i915/glk_dmc_ver1_04.bin
+echo 'CONFIG_FIRMWARE_IN_KERNEL=y' >>target/linux/x86/config-5.4
+echo 'CONFIG_EXTRA_FIRMWARE="i915/glk_dmc_ver1_04.bin"' >>target/linux/x86/config-5.4
+echo 'CONFIG_EXTRA_FIRMWARE_DIR="/lib/firmware"' >>target/linux/x86/config-5.4
