@@ -6,10 +6,10 @@
 MODE=$1
 COMMIT_ID=$2
 if [ -z "$MODE" ]; then
-    COMMIT_ID='Unknow'
+    COMMIT_ID='Unknown'
 fi
 if [ -z "$COMMIT_ID" ]; then
-    COMMIT_ID='Unknow'
+    COMMIT_ID='Unknown'
 fi
 
 # Modify default timezone
