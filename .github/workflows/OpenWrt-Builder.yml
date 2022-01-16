@@ -11,7 +11,7 @@ on:
         default: "manually"
 
       mode:
-        description: "mode"
+        description: "mode(stable|dev|beta)"
         required: false
         default: "dev"
 
@@ -70,7 +70,11 @@ jobs:
         working-directory: /workdir
         if: success() && !cancelled()
         run: |
-          git clone $REPO -b ${{ github.event.inputs.mode }} openwrt
+          if [ ${{ github.event.inputs.mode }} == 'stable' ]; then
+            git clone $REPO openwrt
+          else
+            git clone $REPO -b ${{ github.event.inputs.mode }} openwrt
+          fi
           ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
           cd openwrt
           if [ -n "${{ github.event.inputs.commit_hash }}" ]; then 
