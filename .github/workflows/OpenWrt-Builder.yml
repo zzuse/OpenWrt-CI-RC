@@ -70,7 +70,7 @@ jobs:
         working-directory: /workdir
         if: success() && !cancelled()
         run: |
-          if [ ${{ github.event.inputs.mode }} == 'stable' ]; then
+          if [ ${{ github.event.inputs.mode }} = 'stable' ]; then
             git clone $REPO openwrt
           else
             git clone $REPO -b ${{ github.event.inputs.mode }} openwrt
@@ -127,7 +127,10 @@ jobs:
         if: success() && !cancelled()
         run: |
           [ -e files ] && mv files openwrt/files
-          curl "http://80.251.220.191/openwrt/x86.${{ github.event.inputs.mode }}.config" -o openwrt/.config
+          HTTPCODE=$(curl -s -w "%{http_code}" "http://80.251.220.191/openwrt/x86.${{ github.event.inputs.mode }}.config" -o config)
+          if [ $HTTPCODE != 200 ]; then
+            [ -e $CONFIG ] && mv $CONFIG openwrt/.config
+          fi
 
       - name: Download package
         if: success() && !cancelled()
