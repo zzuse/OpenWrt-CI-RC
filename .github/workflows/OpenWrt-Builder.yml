@@ -98,6 +98,7 @@ jobs:
             sed -i "s/KERNEL_PATCHVER:=$CURRENT_KERNEL_PATCHVER/KERNEL_PATCHVER:=${{ github.event.inputs.kernel }}/g" target/linux/x86/Makefile
             sed -i "s/KERNEL_TESTING_PATCHVER:=$CURRNET_KERNEL_TESTING_PATCHVER/KERNEL_TESTING_PATCHVER:=${{ github.event.inputs.kernel }}/g" target/linux/x86/Makefile
           fi
+          echo "KERNEL_PATCHVER=$(cat target/linux/x86/Makefile | grep KERNEL_PATCHVER | awk -F ':=' '{print $2}')" >> $GITHUB_ENV
 
       - name: Run feeds.sh
         run: |
@@ -165,7 +166,7 @@ jobs:
         run: |
           echo "::set-output name=release_tag::OpenWrt-$(date +'%Y%m%d%H%M%S')-${{ github.event.inputs.mode }}"
           touch release.txt
-          echo "Kernel Version: ${{ github.event.inputs.kernel }}" > release.txt
+          echo "Kernel Patchver: ${{ env.KERNEL_PATCHVER }}" > release.txt
           echo "Commit Hash: ${{ env.COMMITHASH }}" >> release.txt
           echo "Release Note: ${{ github.event.inputs.remark }}" >> release.txt
 
