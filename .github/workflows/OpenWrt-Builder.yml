@@ -22,7 +22,7 @@ on:
 
       kernel:
         description: "kernel"
-        required: true
+        required: false
         default: ""
 
 env:
