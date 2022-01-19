@@ -5,15 +5,15 @@ name: OpenWrt Builder RC
 on:
   workflow_dispatch:
     inputs:
-      remark:
-        description: "remark"
-        required: true
-        default: "manually"
-
       mode:
         description: "mode(stable|dev|beta)"
-        required: false
+        required: true
         default: "dev"
+
+      remark:
+        description: "remark"
+        required: false
+        default: "manually"
 
       commit_hash:
         description: "commit hash"
