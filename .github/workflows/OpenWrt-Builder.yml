@@ -10,11 +10,6 @@ on:
         required: true
         default: "dev"
 
-      remark:
-        description: "remark"
-        required: false
-        default: "manually"
-
       commit_hash:
         description: "commit hash"
         required: false
@@ -24,6 +19,11 @@ on:
         description: "kernel"
         required: false
         default: ""
+
+      remark:
+        description: "remark"
+        required: false
+        default: "manually"
 
 env:
   REPO: https://github.com/deplives/lede.git
