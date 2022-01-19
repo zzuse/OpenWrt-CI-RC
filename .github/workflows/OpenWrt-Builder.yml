@@ -23,7 +23,7 @@ on:
       kernel:
         description: "kernel"
         required: true
-        default: "5.10"
+        default: ""
 
 env:
   REPO: https://github.com/deplives/lede.git
@@ -91,11 +91,13 @@ jobs:
       - name: Switch kernel
         if: success() && !cancelled()
         run: |
-          cd openwrt
-          CURRENT_KERNEL_PATCHVER=$(cat target/linux/x86/Makefile | grep KERNEL_PATCHVER | awk -F ':=' '{print $2}')
-          CURRNET_KERNEL_TESTING_PATCHVER=$(cat target/linux/x86/Makefile | grep KERNEL_TESTING_PATCHVER | awk -F ':=' '{print $2}')
-          sed -i "s/KERNEL_PATCHVER:=$CURRENT_KERNEL_PATCHVER/KERNEL_PATCHVER:=${{ github.event.inputs.kernel }}/g" target/linux/x86/Makefile
-          sed -i "s/KERNEL_TESTING_PATCHVER:=$CURRNET_KERNEL_TESTING_PATCHVER/KERNEL_TESTING_PATCHVER:=${{ github.event.inputs.kernel }}/g" target/linux/x86/Makefile
+          if [ -n "${{ github.event.inputs.kernel }}" ]; then
+            cd openwrt
+            CURRENT_KERNEL_PATCHVER=$(cat target/linux/x86/Makefile | grep KERNEL_PATCHVER | awk -F ':=' '{print $2}')
+            CURRNET_KERNEL_TESTING_PATCHVER=$(cat target/linux/x86/Makefile | grep KERNEL_TESTING_PATCHVER | awk -F ':=' '{print $2}')
+            sed -i "s/KERNEL_PATCHVER:=$CURRENT_KERNEL_PATCHVER/KERNEL_PATCHVER:=${{ github.event.inputs.kernel }}/g" target/linux/x86/Makefile
+            sed -i "s/KERNEL_TESTING_PATCHVER:=$CURRNET_KERNEL_TESTING_PATCHVER/KERNEL_TESTING_PATCHVER:=${{ github.event.inputs.kernel }}/g" target/linux/x86/Makefile
+          fi
 
       - name: Run feeds.sh
         run: |
