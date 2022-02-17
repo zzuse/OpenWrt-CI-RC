@@ -165,7 +165,7 @@ jobs:
         id: tag
         if: success() && !cancelled()
         run: |
-          echo "::set-output name=release_tag::OpenWrt-$(date +'%Y%m%d%H%M%S')-${{ github.event.inputs.mode }}"
+          echo "::set-output name=release_tag::OpenWrt-$(date +'%Y%m%d-%H%M')-${{ github.event.inputs.mode }}"
           touch release.txt
           echo "Kernel Patchver: ${{ env.KERNEL_PATCHVER }}" > release.txt
           echo "Commit Hash: ${{ env.COMMITHASH }}" >> release.txt
