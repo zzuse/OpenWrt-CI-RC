@@ -180,6 +180,16 @@ jobs:
           tag_name: ${{ steps.tag.outputs.release_tag }}
           body_path: release.txt
           files: ${{ env.FIRMWARE }}/*
+      
+      - name: Compile has succeeded
+        if: success() && !cancelled()
+        run: |
+          curl -s "${{ secrets.BARK_URL }}/GitHub%20Action/仓库:%20deplives%2FOpenWrt-CI-RC%0a状态:%20编译成功(${{ github.event.inputs.mode }})?group=OpenWrt&icon=https://blog.zebedy.com/images/avatar.jpg"
+
+      - name: Compile has failed
+        if: failure() && !cancelled()
+        run: |
+          curl -s "${{ secrets.BARK_URL }}/GitHub%20Action/仓库:%20deplives%2FOpenWrt-CI-RC%0a状态:%20编译失败(${{ github.event.inputs.mode }})?group=OpenWrt&icon=https://blog.zebedy.com/images/avatar.jpg"
 
       - name: Remove workflow runs
         uses: Mattraks/delete-workflow-runs@main
