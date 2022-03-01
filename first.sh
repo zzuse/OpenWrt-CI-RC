@@ -72,7 +72,6 @@ sed -i "${line_build_version}a\                <tr><td width=\"33%\"><%:Build Da
 
 # Modify hostname in Homepage
 echo 'Modify hostname...'
-h=${g}' - '${a}${b}${c}${d}${e}${f}
 sed -i 's/${g}'"'"' - '"'"'//g' package/lean/autocore/files/x86/autocore
 
 # Replace openwrt.org in diagnostics with www.baidu.com
