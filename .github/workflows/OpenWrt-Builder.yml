@@ -28,7 +28,6 @@ on:
 env:
   REPO: https://github.com/deplives/lede.git
   CONFIG: x86.${{ github.event.inputs.mode }}.config
-  FEEDS_SH: feeds.sh
   FIRST_SH: first.sh
   SECOND_SH: second.sh
   THIRD_SH: third.sh
@@ -103,17 +102,11 @@ jobs:
           KERNEL=$KERNEL_PATCHVER$(cat include/kernel-"$KERNEL_PATCHVER" | grep LINUX_VERSION | awk -F '= ' '{print $2}')
           echo "KERNEL=$KERNEL" >> $GITHUB_ENV
 
-      - name: Run feeds.sh
-        run: |
-          chmod +x $FEEDS_SH
-          cd openwrt
-          $GITHUB_WORKSPACE/$FEEDS_SH
-
       - name: Run first.sh
         run: |
           chmod +x $FIRST_SH
           cd openwrt
-          $GITHUB_WORKSPACE/$FIRST_SH
+          $GITHUB_WORKSPACE/$FIRST_SH ${{ github.event.inputs.mode }}
 
       - name: Update feeds
         if: success() && !cancelled()
