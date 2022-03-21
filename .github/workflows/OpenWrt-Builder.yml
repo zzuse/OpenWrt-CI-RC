@@ -171,7 +171,7 @@ jobs:
           echo "::set-output name=release_tag::OpenWrt-$(date +'%Y%m%d-%H%M')-${{ github.event.inputs.mode }}"
           touch release.txt
           echo "Kernel Version: ${{ env.KERNEL }}" > release.txt
-          echo "Commit Hash: ${{ env.COMMITHASH }}" >> release.txt
+          echo "Commit SHA: ${{ env.COMMITHASH }}" >> release.txt
           echo "Release Note: ${{ github.event.inputs.remark }}" >> release.txt
 
       - name: Release
