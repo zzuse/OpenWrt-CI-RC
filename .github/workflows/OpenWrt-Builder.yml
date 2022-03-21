@@ -188,13 +188,11 @@ jobs:
         if: success() && !cancelled()
         run: |
           curl -s "${{ secrets.BARK_URL }}/GitHub%20Action/仓库:%20deplives%2FOpenWrt-CI-RC%0a状态:%20编译成功(${{ env.KERNEL }} ${{ github.event.inputs.mode }})?group=OpenWrt&icon=https://blog.zebedy.com/images/avatar.jpg"
-          curl -s "https://api.telegram.org/${{ secrets.TELEGRAM_TOKEN }}/sendMessage" --header "Content-Type: application/json" --data-raw "{\"chat_id\": \"${{ secrets.TELEGRAM_TO }}\",\"text\": \"OpenWrt 编译(${{ github.event.inputs.mode }})\n状态: 成功\nKernel Version: ${{ env.KERNEL }}\nCommit SHA: ${{ env.COMMITHASH }}\"}"
 
       - name: Compile has failed
         if: failure() && !cancelled()
         run: |
           curl -s "${{ secrets.BARK_URL }}/GitHub%20Action/仓库:%20deplives%2FOpenWrt-CI-RC%0a状态:%20编译失败(${{ env.KERNEL }} ${{ github.event.inputs.mode }})?group=OpenWrt&icon=https://blog.zebedy.com/images/avatar.jpg"
-          curl -s "https://api.telegram.org/${{ secrets.TELEGRAM_TOKEN }}/sendMessage" --header "Content-Type: application/json" --data-raw "{\"chat_id\": \"${{ secrets.TELEGRAM_TO }}\",\"text\": \"OpenWrt 编译(${{ github.event.inputs.mode }})\n状态: 失败\nKernel Version: ${{ env.KERNEL }}\nCommit SHA: ${{ env.COMMITHASH }}\"}"
 
       - name: Remove workflow runs
         uses: Mattraks/delete-workflow-runs@main
