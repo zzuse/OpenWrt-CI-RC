@@ -120,10 +120,8 @@ jobs:
         run: |
           chmod +x $PATCHES_SH
           ls
-          cd openwrt
-          ls
           $GITHUB_WORKSPACE/$PATCHES_SH
-          ls 
+          cd openwrt
           ls feeds/packages/net/mtr
           ls feeds/packages/net/mtr/patches
 
