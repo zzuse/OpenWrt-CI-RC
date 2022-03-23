@@ -119,11 +119,7 @@ jobs:
         if: success() && !cancelled()
         run: |
           chmod +x $PATCHES_SH
-          ls
           $GITHUB_WORKSPACE/$PATCHES_SH
-          cd openwrt
-          ls feeds/packages/net/mtr
-          ls feeds/packages/net/mtr/patches
 
       - name: Run second.sh
         if: success() && !cancelled()
