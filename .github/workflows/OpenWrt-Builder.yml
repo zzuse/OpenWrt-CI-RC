@@ -31,6 +31,7 @@ env:
   FIRST_SH: first.sh
   SECOND_SH: second.sh
   THIRD_SH: third.sh
+  PATCHES_SH: patches.sh
   TIMEZONE: Asia/Shanghai
 
 jobs:
@@ -104,6 +105,7 @@ jobs:
           echo "$KERNEL"
 
       - name: Run first.sh
+        if: success() && !cancelled()
         run: |
           chmod +x $FIRST_SH
           cd openwrt
@@ -113,7 +115,18 @@ jobs:
         if: success() && !cancelled()
         run: cd openwrt && ./scripts/feeds update -a
 
+      - name: Run patches.sh
+        if: success() && !cancelled()
+        run: |
+          chmod +x $PATCHES_SH
+          cd openwrt
+          $GITHUB_WORKSPACE/$PATCHES_SH
+          ls 
+          ls feeds/packages/net/mtr
+          ls feeds/packages/net/mtr/patches
+
       - name: Run second.sh
+        if: success() && !cancelled()
         run: |
           chmod +x $SECOND_SH
           cd openwrt
@@ -124,6 +137,7 @@ jobs:
         run: cd openwrt && ./scripts/feeds install -a
 
       - name: Run third.sh
+        if: success() && !cancelled()
         run: |
           chmod +x $THIRD_SH
           cd openwrt
