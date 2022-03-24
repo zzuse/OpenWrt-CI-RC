@@ -198,13 +198,13 @@ jobs:
       - name: Compile has succeeded
         if: success() && !cancelled()
         run: |
-          echo "COMPILE=true" >> $GITHUB_ENV
+          echo "COMPILE='true'" >> $GITHUB_ENV
           curl -s "${{ secrets.BARK_URL }}/GitHub%20Action/仓库:%20deplives%2FOpenWrt-CI-RC%0a状态:%20编译成功(${{ env.KERNEL }} ${{ github.event.inputs.mode }})?group=OpenWrt&icon=https://blog.zebedy.com/images/avatar.jpg"
 
       - name: Compile has failed
         if: failure() && !cancelled()
         run: |
-          echo "COMPILE=false" >> $GITHUB_ENV
+          echo "COMPILE='false'" >> $GITHUB_ENV
           curl -s "${{ secrets.BARK_URL }}/GitHub%20Action/仓库:%20deplives%2FOpenWrt-CI-RC%0a状态:%20编译失败(${{ env.KERNEL }} ${{ github.event.inputs.mode }})?group=OpenWrt&icon=https://blog.zebedy.com/images/avatar.jpg"
 
       - name: Prepare artifact
