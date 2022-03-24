@@ -89,29 +89,6 @@ jobs:
           ccache: true
           prefix: ${{ github.workspace }}/openwrt
 
-      - name: Restore configuration
-        if: success() && !cancelled()
-        run: |
-          [ -e files ] && mv files openwrt/files
-          HTTPCODE=$(curl -s -w "%{http_code}" "${{ secrets.REMOTE_CONFIG_URL }}/x86.${{ github.event.inputs.mode }}.config" -o openwrt/.config)
-          if [ $HTTPCODE != 200 ]; then
-            echo 'Get remote config failed!'
-            [ -e $CONFIG ] && mv $CONFIG openwrt/.config
-          fi
-
-      - name: Switch kernel
-        if: success() && !cancelled()
-        run: |
-          cd openwrt
-          if [ -n "${{ github.event.inputs.kernel }}" ]; then
-            CURRENT_KERNEL_PATCHVER=$(cat target/linux/x86/Makefile | grep KERNEL_PATCHVER | awk -F ':=' '{print $2}')
-            CURRNET_KERNEL_TESTING_PATCHVER=$(cat target/linux/x86/Makefile | grep KERNEL_TESTING_PATCHVER | awk -F ':=' '{print $2}')
-            CONFIG_KERNEL_PATCHVER=$(echo "${{ github.event.inputs.kernel }}" | sed 's/\./_/g')
-            sed -i "s/KERNEL_PATCHVER:=${CURRENT_KERNEL_PATCHVER}/KERNEL_PATCHVER:=${{ github.event.inputs.kernel }}/g" target/linux/x86/Makefile
-            sed -i "s/KERNEL_TESTING_PATCHVER:=${CURRNET_KERNEL_TESTING_PATCHVER}/KERNEL_TESTING_PATCHVER:=${{ github.event.inputs.kernel }}/g" target/linux/x86/Makefile
-            sed -i "s/CONFIG_LINUX.*/CONFIG_LINUX_${CONFIG_KERNEL_PATCHVER}=y/g" .config
-          fi
-
       - name: Run first.sh
         if: success() && !cancelled()
         run: |
@@ -146,6 +123,30 @@ jobs:
           chmod +x $THIRD_SH
           cd openwrt
           ${GITHUB_WORKSPACE}/$THIRD_SH
+
+      - name: Restore configuration
+        if: success() && !cancelled()
+        run: |
+          [ -e files ] && mv files openwrt/files
+          HTTPCODE=$(curl -s -w "%{http_code}" "${{ secrets.REMOTE_CONFIG_URL }}/x86.${{ github.event.inputs.mode }}.config" -o openwrt/.config)
+          ls -la openwrt/
+          if [ $HTTPCODE != 200 ]; then
+            echo 'Get remote config failed!'
+            [ -e $CONFIG ] && mv $CONFIG openwrt/.config
+          fi
+
+      - name: Switch kernel
+        if: success() && !cancelled()
+        run: |
+          cd openwrt
+          if [ -n "${{ github.event.inputs.kernel }}" ]; then
+            CURRENT_KERNEL_PATCHVER=$(cat target/linux/x86/Makefile | grep KERNEL_PATCHVER | awk -F ':=' '{print $2}')
+            CURRNET_KERNEL_TESTING_PATCHVER=$(cat target/linux/x86/Makefile | grep KERNEL_TESTING_PATCHVER | awk -F ':=' '{print $2}')
+            CONFIG_KERNEL_PATCHVER=$(echo "${{ github.event.inputs.kernel }}" | sed 's/\./_/g')
+            sed -i "s/KERNEL_PATCHVER:=${CURRENT_KERNEL_PATCHVER}/KERNEL_PATCHVER:=${{ github.event.inputs.kernel }}/g" target/linux/x86/Makefile
+            sed -i "s/KERNEL_TESTING_PATCHVER:=${CURRNET_KERNEL_TESTING_PATCHVER}/KERNEL_TESTING_PATCHVER:=${{ github.event.inputs.kernel }}/g" target/linux/x86/Makefile
+            sed -i "s/CONFIG_LINUX.*/CONFIG_LINUX_${CONFIG_KERNEL_PATCHVER}=y/g" .config
+          fi
 
       - name: Download package
         if: success() && !cancelled()
