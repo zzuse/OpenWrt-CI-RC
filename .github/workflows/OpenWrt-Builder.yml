@@ -211,16 +211,16 @@ jobs:
       - name: Prepare artifact
         if: failure() && !cancelled() && env.COMPILE == 'false'
         run: |
-          mkdir -p ./artifact/config
+          mkdir -p ./artifact
           cd openwrt
-          [ -e .config ] && cp -rf .config ../artifact/config/x86.${{ github.event.inputs.mode }}.config
+          [ -e .config ] && cp -f .config ../artifact/x86.${{ github.event.inputs.mode }}.config
 
       - name: Upload artifact
         if: failure() && !cancelled() && env.COMPILE == 'false'
         uses: actions/upload-artifact@v2
         with:
           name: openwrt_config
-          path: ./artifact/config/
+          path: ../artifact/
 
       - name: Remove workflow runs
         uses: Mattraks/delete-workflow-runs@main
