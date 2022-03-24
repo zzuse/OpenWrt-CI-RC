@@ -76,7 +76,7 @@ jobs:
           else
             git clone $REPO -b ${{ github.event.inputs.mode }} openwrt
           fi
-          ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+          ln -sf /workdir/openwrt ${GITHUB_WORKSPACE}/openwrt
           cd openwrt
           if [ -n "${{ github.event.inputs.commit_hash }}" ]; then 
             git reset --hard ${{ github.event.inputs.commit_hash }}
@@ -107,12 +107,12 @@ jobs:
             CURRENT_KERNEL_PATCHVER=$(cat target/linux/x86/Makefile | grep KERNEL_PATCHVER | awk -F ':=' '{print $2}')
             CURRNET_KERNEL_TESTING_PATCHVER=$(cat target/linux/x86/Makefile | grep KERNEL_TESTING_PATCHVER | awk -F ':=' '{print $2}')
             CONFIG_KERNEL_PATCHVER=$(echo "${{ github.event.inputs.kernel }}" | sed 's/\./_/g')
-            sed -i "s/KERNEL_PATCHVER:=$CURRENT_KERNEL_PATCHVER/KERNEL_PATCHVER:=${{ github.event.inputs.kernel }}/g" target/linux/x86/Makefile
-            sed -i "s/KERNEL_TESTING_PATCHVER:=$CURRNET_KERNEL_TESTING_PATCHVER/KERNEL_TESTING_PATCHVER:=${{ github.event.inputs.kernel }}/g" target/linux/x86/Makefile
-            sed -i "s/CONFIG_LINUX.*/CONFIG_LINUX_$CONFIG_KERNEL_PATCHVER=y/g" .config
+            sed -i "s/KERNEL_PATCHVER:=${CURRENT_KERNEL_PATCHVER}/KERNEL_PATCHVER:=${{ github.event.inputs.kernel }}/g" target/linux/x86/Makefile
+            sed -i "s/KERNEL_TESTING_PATCHVER:=${CURRNET_KERNEL_TESTING_PATCHVER}/KERNEL_TESTING_PATCHVER:=${{ github.event.inputs.kernel }}/g" target/linux/x86/Makefile
+            sed -i "s/CONFIG_LINUX.*/CONFIG_LINUX_${CONFIG_KERNEL_PATCHVER}=y/g" .config
           fi
           KERNEL_PATCHVER=$(cat target/linux/x86/Makefile | grep KERNEL_PATCHVER | awk -F ':=' '{print $2}')
-          KERNEL=$KERNEL_PATCHVER$(cat include/kernel-"$KERNEL_PATCHVER" | grep LINUX_VERSION | awk -F '= ' '{print $2}')
+          KERNEL=${KERNEL_PATCHVER}$(cat include/kernel-"$KERNEL_PATCHVER" | grep LINUX_VERSION | awk -F '= ' '{print $2}')
           CONFIG_KERNEL_LINE=$(cat .config | grep CONFIG_LINUX | awk -F '=' '{print $1}')
           echo "KERNEL=$KERNEL" >> $GITHUB_ENV
           echo "$CONFIG_KERNEL_LINE $KERNEL"
@@ -122,7 +122,7 @@ jobs:
         run: |
           chmod +x $FIRST_SH
           cd openwrt
-          $GITHUB_WORKSPACE/$FIRST_SH ${{ github.event.inputs.mode }}
+          ${GITHUB_WORKSPACE}/$FIRST_SH ${{ github.event.inputs.mode }}
 
       - name: Update feeds
         if: success() && !cancelled()
@@ -132,14 +132,14 @@ jobs:
         if: success() && !cancelled()
         run: |
           chmod +x $PATCHES_SH
-          $GITHUB_WORKSPACE/$PATCHES_SH
+          ${GITHUB_WORKSPACE}/$PATCHES_SH
 
       - name: Run second.sh
         if: success() && !cancelled()
         run: |
           chmod +x $SECOND_SH
           cd openwrt
-          $GITHUB_WORKSPACE/$SECOND_SH ${{ github.event.inputs.mode }} ${{ env.COMMITHASH }}
+          ${GITHUB_WORKSPACE}/$SECOND_SH ${{ github.event.inputs.mode }} ${{ env.COMMITHASH }}
 
       - name: Install feeds
         if: success() && !cancelled()
@@ -150,7 +150,7 @@ jobs:
         run: |
           chmod +x $THIRD_SH
           cd openwrt
-          $GITHUB_WORKSPACE/$THIRD_SH
+          ${GITHUB_WORKSPACE}/$THIRD_SH
 
       - name: Download package
         if: success() && !cancelled()
