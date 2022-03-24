@@ -207,6 +207,18 @@ jobs:
         run: |
           curl -s "${{ secrets.BARK_URL }}/GitHub%20Action/仓库:%20deplives%2FOpenWrt-CI-RC%0a状态:%20编译失败(${{ env.KERNEL }} ${{ github.event.inputs.mode }})?group=OpenWrt&icon=https://blog.zebedy.com/images/avatar.jpg"
 
+      - name: Prepare artifact
+        if: failure() && !cancelled()
+        run: |
+          cp -rf .config x86.${{ github.event.inputs.mode }}.config
+
+      - name: Upload artifact
+        if: failure() && !cancelled()
+        uses: actions/upload-artifact@v2
+        with:
+          name: x86.${{ github.event.inputs.mode }}.config
+          path: ./x86.${{ github.event.inputs.mode }}.config
+
       - name: Remove workflow runs
         uses: Mattraks/delete-workflow-runs@main
         with:
