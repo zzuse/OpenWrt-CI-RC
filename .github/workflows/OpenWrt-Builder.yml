@@ -83,12 +83,6 @@ jobs:
           fi
           echo "COMMITHASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
-      - name: Cache
-        uses: deplives/cacheopenwrt@main
-        with:
-          ccache: true
-          prefix: ${{ github.workspace }}/openwrt
-
       - name: Run first.sh
         if: success() && !cancelled()
         run: |
@@ -129,7 +123,6 @@ jobs:
         run: |
           [ -e files ] && mv files openwrt/files
           HTTPCODE=$(curl -s -w "%{http_code}" "${{ secrets.REMOTE_CONFIG_URL }}/x86.${{ github.event.inputs.mode }}.config" -o openwrt/.config)
-          ls -la openwrt/
           if [ $HTTPCODE != 200 ]; then
             echo 'Get remote config failed!'
             [ -e $CONFIG ] && mv $CONFIG openwrt/.config
@@ -155,6 +148,12 @@ jobs:
           make defconfig
           make download -j8
           find dl -size -1024c -exec rm -f {} \;
+
+      - name: Cache
+        uses: deplives/cacheopenwrt@main
+        with:
+          ccache: true
+          prefix: ${{ github.workspace }}/openwrt
 
       - name: Compile firmware
         if: success() && !cancelled()
