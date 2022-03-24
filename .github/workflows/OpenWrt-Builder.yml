@@ -208,12 +208,11 @@ jobs:
       - name: Prepare artifact
         if: failure() && !cancelled()
         run: |
-          mkdir -p ./artifact
-          ls
-          echo "111"
-          cd openwrt
-          ls
-          [ -e .config ] && cp -f .config ../artifact/x86.${{ github.event.inputs.mode }}.config
+          mkdir -p artifact
+          ls -la artifact
+          echo "==============="
+          ls -la openwrt/.config
+          [ -e openwrt/.config ] && cp openwrt/.config artifact/x86.${{ github.event.inputs.mode }}.config
 
       - name: Upload artifact
         if: failure() && !cancelled()
