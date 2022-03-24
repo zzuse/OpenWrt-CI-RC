@@ -220,7 +220,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: openwrt_config
-          path: ../artifact/
+          path: ./artifact/
 
       - name: Remove workflow runs
         uses: Mattraks/delete-workflow-runs@main
