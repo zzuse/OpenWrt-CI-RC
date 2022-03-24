@@ -212,14 +212,15 @@ jobs:
       - name: Prepare artifact
         if: env.COMPILE == 'false'
         run: |
-          cp -rf .config x86.${{ github.event.inputs.mode }}.config
+          cd openwrt
+          [ -e .config ] && cp -rf .config x86.${{ github.event.inputs.mode }}.config
 
       - name: Upload artifact
         if: env.COMPILE == 'false'
         uses: actions/upload-artifact@v2
         with:
           name: x86.${{ github.event.inputs.mode }}.config
-          path: ./x86.${{ github.event.inputs.mode }}.config
+          path: openwrt/x86.${{ github.event.inputs.mode }}.config
 
       - name: Remove workflow runs
         uses: Mattraks/delete-workflow-runs@main
