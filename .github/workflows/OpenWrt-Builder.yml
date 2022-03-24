@@ -212,7 +212,10 @@ jobs:
         if: failure() && !cancelled() && env.COMPILE == 'false'
         run: |
           mkdir -p ./artifact
+          ls
+          echo "111"
           cd openwrt
+          ls
           [ -e .config ] && cp -f .config ../artifact/x86.${{ github.event.inputs.mode }}.config
 
       - name: Upload artifact
