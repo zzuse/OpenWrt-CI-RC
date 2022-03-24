@@ -200,20 +200,22 @@ jobs:
       - name: Compile has succeeded
         if: success() && !cancelled()
         run: |
+          echo "COMPILE=true" >> $GITHUB_ENV
           curl -s "${{ secrets.BARK_URL }}/GitHub%20Action/仓库:%20deplives%2FOpenWrt-CI-RC%0a状态:%20编译成功(${{ env.KERNEL }} ${{ github.event.inputs.mode }})?group=OpenWrt&icon=https://blog.zebedy.com/images/avatar.jpg"
 
       - name: Compile has failed
         if: failure() && !cancelled()
         run: |
+          echo "COMPILE=false" >> $GITHUB_ENV
           curl -s "${{ secrets.BARK_URL }}/GitHub%20Action/仓库:%20deplives%2FOpenWrt-CI-RC%0a状态:%20编译失败(${{ env.KERNEL }} ${{ github.event.inputs.mode }})?group=OpenWrt&icon=https://blog.zebedy.com/images/avatar.jpg"
 
       - name: Prepare artifact
-        if: failure() && !cancelled()
+        if: env.COMPILE == 'false'
         run: |
           cp -rf .config x86.${{ github.event.inputs.mode }}.config
 
       - name: Upload artifact
-        if: failure() && !cancelled()
+        if: env.COMPILE == 'false'
         uses: actions/upload-artifact@v2
         with:
           name: x86.${{ github.event.inputs.mode }}.config
