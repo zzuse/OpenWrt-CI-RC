@@ -219,7 +219,7 @@ jobs:
         if: failure() && !cancelled() && env.COMPILE == 'false'
         uses: actions/upload-artifact@v2
         with:
-          name: x86.${{ github.event.inputs.mode }}.config
+          name: openwrt_config
           path: ./artifact/config/
 
       - name: Remove workflow runs
