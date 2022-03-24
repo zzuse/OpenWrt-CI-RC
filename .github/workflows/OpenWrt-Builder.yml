@@ -209,9 +209,6 @@ jobs:
         if: failure() && !cancelled()
         run: |
           mkdir -p artifact
-          ls -la artifact
-          echo "==============="
-          ls -la openwrt/.config
           [ -e openwrt/.config ] && cp openwrt/.config artifact/x86.${{ github.event.inputs.mode }}.config
 
       - name: Upload artifact
