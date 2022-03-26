@@ -36,6 +36,3 @@ sed -i "$ a src-git helloworld https://github.com/deplives/helloworld;$BRANCH_BO
 echo 'Add openwrt-package feed...'
 sed -i "$ a src-git bobby https://github.com/deplives/openwrt-package;$BRANCH_BOBBY" feeds.conf.default
 
-# Delete defalut luci-app-ipsec-server
-echo 'Delete defalut luci-app-ipsec-server...'
-rm -rf package/lean/luci-app-ipsec-server
