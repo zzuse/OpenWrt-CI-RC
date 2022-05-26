@@ -25,7 +25,7 @@ sed -i 's/cn.pool.ntp.org/pool.ntp.org/g' package/base-files/files/bin/config_ge
 
 # Modify default LAN ip
 echo 'Modify default LAN IP...'
-sed -i 's/192.168.1.1/192.168.50.1/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.3.200/g' package/base-files/files/bin/config_generate
 
 # Modify default theme
 echo 'Modify default theme...'
@@ -90,7 +90,7 @@ echo "██║   ██║██╔═══╝ ██╔══╝  ██║�
 echo "╚██████╔╝██║     ███████╗██║ ╚████║╚███╔███╔╝██║  ██║   ██║    " >>package/base-files/files/etc/banner
 echo " ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚══╝╚══╝ ╚═╝  ╚═╝   ╚═╝    " >>package/base-files/files/etc/banner
 echo " ------------------------------------------------------------- " >>package/base-files/files/etc/banner
-echo " %D %C ${build_date} $MODE @Bobby                              " >>package/base-files/files/etc/banner
+echo " %D %C ${build_date} $MODE @ZZUSE                              " >>package/base-files/files/etc/banner
 echo " $COMMIT_SHA                                                   " >>package/base-files/files/etc/banner
 echo " ------------------------------------------------------------- " >>package/base-files/files/etc/banner
 echo "                                                               " >>package/base-files/files/etc/banner
