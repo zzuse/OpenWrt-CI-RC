@@ -160,7 +160,7 @@ jobs:
         if: success() && !cancelled()
         run: |
           echo "Start compile ${{ env.KERNEL }} ${{ github.event.inputs.mode }}"
-          curl -s "https://oapi.dingtalk.com/robot/send\?access_token\=${{ secrets.DINGTOKEN }} -H 'Content-Type: application/json' -d ' { \"msgtype\": \"markdown\", \"markdown\": {\"title\":\"job notify\", \"text\":\"####  compile \n\n started \n\n \" }, \"at\": { \"atMobiles\": [ \"00000000\" ], \"isAtAll\": false } }'"
+          curl -s  https://oapi.dingtalk.com/robot/send\?access_token\=${{ secrets.DINGTOKEN }} -H 'Content-Type: application/json' -d ' { "msgtype": "markdown", "markdown": {"title":"job notify", "text":"####  compile \n\n started \n\n " }, "at": { "atMobiles": [ "00000000" ], "isAtAll": false } }'
           cd openwrt
           make -j$(nproc) || make -j1 V=sc
 
@@ -198,12 +198,12 @@ jobs:
       - name: Compile has succeeded
         if: success() && !cancelled()
         run: |
-          curl -s "https://oapi.dingtalk.com/robot/send\?access_token\=${{ secrets.DINGTOKEN }} -H 'Content-Type: application/json' -d ' { \"msgtype\": \"markdown\", \"markdown\": {\"title\":\"job notify\", \"text\":\"####  compile \n\n successed \n\n \" }, \"at\": { \"atMobiles\": [ \"00000000\" ], \"isAtAll\": false } }'"
+          curl -s  https://oapi.dingtalk.com/robot/send\?access_token\=${{ secrets.DINGTOKEN }} -H 'Content-Type: application/json' -d ' { "msgtype": "markdown", "markdown": {"title":"job notify", "text":"####  compile \n\n successed \n\n " }, "at": { "atMobiles": [ "00000000" ], "isAtAll": false } }'
 
       - name: Compile has failed
         if: failure() && !cancelled()
         run: |
-          curl -s "https://oapi.dingtalk.com/robot/send\?access_token\=${{ secrets.DINGTOKEN }} -H 'Content-Type: application/json' -d ' { \"msgtype\": \"markdown\", \"markdown\": {\"title\":\"job notify\", \"text\":\"####  compile \n\n failed \n\n \" }, \"at\": { \"atMobiles\": [ \"00000000\" ], \"isAtAll\": false } }'"
+          curl -s  https://oapi.dingtalk.com/robot/send\?access_token\=${{ secrets.DINGTOKEN }} -H 'Content-Type: application/json' -d ' { "msgtype": "markdown", "markdown": {"title":"job notify", "text":"####  compile \n\n failed \n\n " }, "at": { "atMobiles": [ "00000000" ], "isAtAll": false } }'
 
       - name: Prepare artifact
         if: failure() && !cancelled()
