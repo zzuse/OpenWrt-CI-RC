@@ -8,7 +8,7 @@ on:
       mode:
         description: "mode(stable|dev|beta)"
         required: true
-        default: "beta"
+        default: "dev"
 
       commit_hash:
         description: "commit hash"
@@ -121,11 +121,9 @@ jobs:
       - name: Restore configuration
         if: success() && !cancelled()
         run: |
-          [ -e files ] && mv files openwrt/files
-          HTTPCODE=$(curl -s -w "%{http_code}" "${{ secrets.REMOTE_CONFIG_URL }}/x86.${{ github.event.inputs.mode }}.config" -o openwrt/.config)
-          if [ $HTTPCODE != 200 ]; then
-            echo 'Get remote config failed!'
-            [ -e $CONFIG ] && mv $CONFIG openwrt/.config
+          if [ -f ${GITHUB_WORKSPACE}/$CONFIG ]; then
+            echo 'restore config...'
+            cp -f ${GITHUB_WORKSPACE}/$CONFIG openwrt/.config
           fi
 
       - name: Switch kernel
@@ -162,7 +160,7 @@ jobs:
         if: success() && !cancelled()
         run: |
           echo "Start compile ${{ env.KERNEL }} ${{ github.event.inputs.mode }}"
-          curl -s "${{ secrets.BARK_URL }}/GitHub%20Action/仓库:%20deplives%2FOpenWrt-CI-RC%0a状态:%20开始编译(${{ env.KERNEL }} ${{ github.event.inputs.mode }})?group=OpenWrt&icon=https://blog.zebedy.com/images/avatar.jpg"
+          curl -s "https://oapi.dingtalk.com/robot/send\?access_token\=${{ secrets.DINGTOKEN }} -H 'Content-Type: application/json' -d ' { \"msgtype\": \"markdown\", \"markdown\": {\"title\":\"job notify\", \"text\":\"####  compile \n\n started \n\n \" }, \"at\": { \"atMobiles\": [ \"00000000\" ], \"isAtAll\": false } }'"
           cd openwrt
           make -j$(nproc) || make -j1 V=sc
 
@@ -200,12 +198,12 @@ jobs:
       - name: Compile has succeeded
         if: success() && !cancelled()
         run: |
-          curl -s "${{ secrets.BARK_URL }}/GitHub%20Action/仓库:%20deplives%2FOpenWrt-CI-RC%0a状态:%20编译成功(${{ env.KERNEL }} ${{ github.event.inputs.mode }})?group=OpenWrt&icon=https://blog.zebedy.com/images/avatar.jpg"
+          curl -s "https://oapi.dingtalk.com/robot/send\?access_token\=${{ secrets.DINGTOKEN }} -H 'Content-Type: application/json' -d ' { \"msgtype\": \"markdown\", \"markdown\": {\"title\":\"job notify\", \"text\":\"####  compile \n\n successed \n\n \" }, \"at\": { \"atMobiles\": [ \"00000000\" ], \"isAtAll\": false } }'"
 
       - name: Compile has failed
         if: failure() && !cancelled()
         run: |
-          curl -s "${{ secrets.BARK_URL }}/GitHub%20Action/仓库:%20deplives%2FOpenWrt-CI-RC%0a状态:%20编译失败(${{ env.KERNEL }} ${{ github.event.inputs.mode }})?group=OpenWrt&icon=https://blog.zebedy.com/images/avatar.jpg"
+          curl -s "https://oapi.dingtalk.com/robot/send\?access_token\=${{ secrets.DINGTOKEN }} -H 'Content-Type: application/json' -d ' { \"msgtype\": \"markdown\", \"markdown\": {\"title\":\"job notify\", \"text\":\"####  compile \n\n failed \n\n \" }, \"at\": { \"atMobiles\": [ \"00000000\" ], \"isAtAll\": false } }'"
 
       - name: Prepare artifact
         if: failure() && !cancelled()
