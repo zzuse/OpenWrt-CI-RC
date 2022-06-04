@@ -36,3 +36,6 @@ sed -i "$ a src-git helloworld https://github.com/deplives/helloworld;$BRANCH_BO
 echo 'Add openwrt-package feed...'
 sed -i "$ a src-git bobby https://github.com/deplives/openwrt-package;$BRANCH_BOBBY" feeds.conf.default
 
+#echo 'Add kenzok8...'
+#sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
+#sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
